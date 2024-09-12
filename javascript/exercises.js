@@ -63,6 +63,7 @@ export async function meaningfulLineCount(filePath) {
       validLines++;
     }
   }
+  file.close()
   return validLines;
 }
 
