@@ -6,6 +6,12 @@
 import { open } from "node:fs/promises"
 
 export function change(amount) {
+  /**
+   *  Returns the correct amount of coins equilvalent to the
+   *  amount needed to give back. The amount of coins given back
+   *  must be efficient, so if you need to give back 25 cents, giving
+   *  back twenty-five 1 cent coins is the wrong answer.
+   */
   if (!Number.isInteger(amount)) {
     throw new TypeError("Amount must be an integer")
   }
@@ -22,11 +28,19 @@ export function change(amount) {
 
 // Write your first then lower case function here
 export function firstThenLowerCase(wordList, wordPredicate) {
+  /**
+   *  Finds the first word in wordList that fits the wordPredicate,
+   *  then lowercases that word.
+   */
   return wordList?.filter(word => wordPredicate(word))[0]?.toLowerCase();
 }
 
 // Write your powers generator here
 export function* powersGenerator(powers) {
+  /**
+   *  Generates every exponent from b^0 to b^n, where b^n <= upTo 
+   *  and b^(n+1) > upTo won't be yielded and instead ending the generator.
+   */
   const { ofBase, upTo } = powers;
   let exponent = 1;
   while (upTo >= exponent) {
@@ -37,6 +51,12 @@ export function* powersGenerator(powers) {
 
 // Write your say function here
 export function say(word = null) {
+  /**
+   *  Returns a string of words in the parameter; however, it 
+   *  supports "chainable" functions.
+   *  i.e. say("hi")("there")("Mr.")("Johnson") will output 
+   *  "hi there Mr. Johnson".
+   */
   let phrase = "";
   function nextPhrase(currentWord = null) {
     if (currentWord === null) {
@@ -50,6 +70,11 @@ export function say(word = null) {
 
 // Write your line count function here
 export async function meaningfulLineCount(filePath) {
+  /**
+   *  Reads the lines of a file and outputs how many lines
+   *  in that file contains a non-whitespace character BUT 
+   *  does not start with #. Whitespace is ignored in the file.
+   */
   const file = await open(filePath, "r");
   let validLines = 0;
   if (file === null) {
