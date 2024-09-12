@@ -21,7 +21,6 @@ def first_then_lower_case(a: list[str], p: Callable[[str], bool], /) -> Optional
             return string.lower()
     return None
 
-
 # Write your powers generator here
 def powers_generator(*, base, limit):
     exponent = 0
