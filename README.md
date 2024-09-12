@@ -1,5 +1,5 @@
 # Programming Languages I
-Students: Wesley Ng, Matthew de Jesus, Jody
+Students: Wesley Ng, Matthew de Jesus, Jody Orlando Jasim
 
 This repo is a collection of submitted homework from the group. Under the README.md is a description of every homework assignment.
 
