@@ -54,6 +54,7 @@ function say(word)
 end
 
 -- Write your line count function here
+-- trim all whitespace from https://stackoverflow.com/questions/10460126/how-to-remove-spaces-from-a-string-in-lua
 function meaningful_line_count(filename) 
     local file = io.open(filename)
     if not file then
@@ -61,10 +62,9 @@ function meaningful_line_count(filename)
     end
   
     local count = 0
-  
     for line in file:lines() do
       local trimmed_line = line:match("^%s*(.-)%s*$") -- removes all whitespace
-        if trimmed_line ~= "" and not trimmed_line:match("^%s*#") then
+        if trimmed_line ~= "" and not trimmed_line:match("^%s*#") then -- checks if first non-whitespace char is #
           count = count + 1
         end
     end
