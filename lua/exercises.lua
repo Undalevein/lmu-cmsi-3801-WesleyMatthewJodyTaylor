@@ -14,8 +14,26 @@ function change(amount)
 end
 
 -- Write your first then lower case function here
+function first_then_lower_case(table, predicate)
+    for _, item in pairs(table) do
+      if predicate(item) then
+        return item:lower()
+      end
+    end
+    return nil
+  end
 
 -- Write your powers generator here
+function powers_generator(base, limit)
+    return coroutine.create(function ()
+        local power, result = 0, base
+        while base ^ power <= limit do 
+            result, power = base ^ power, power + 1
+            coroutine.yield(result)
+        end
+    end)
+  end
+  
 
 -- Write your say function here
 function say(word)
@@ -36,6 +54,24 @@ function say(word)
 end
 
 -- Write your line count function here
+function meaningful_line_count(filename) 
+    local file = io.open(filename)
+    if not file then
+      error("No such file")
+    end
+  
+    local count = 0
+  
+    for line in file:lines() do
+      local trimmed_line = line:match("^%s*(.-)%s*$") -- removes all whitespace
+        if trimmed_line ~= "" and not trimmed_line:match("^%s*#") then
+          count = count + 1
+        end
+    end
+  
+    file:close()
+    return count
+  end
 
 -- Write your Quaternion table here
 Quaternion = {}
