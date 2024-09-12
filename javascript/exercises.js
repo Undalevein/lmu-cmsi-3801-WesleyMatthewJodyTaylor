@@ -1,6 +1,6 @@
 /**
- * Author: Wesley Ng
- * Collaborators: Jody and Matthew
+ * Author: Wesley Ng, Jody, and Matthew
+ * Collaborators: None
  * 
  */
 import { open } from "node:fs/promises"
