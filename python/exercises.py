@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from collections.abc import Callable
-from typing import Callable, Optional
+from typing import Optional, Iterator
 import os
 
 
@@ -24,7 +24,7 @@ def first_then_lower_case(a: list[str], p: Callable[[str], bool], /) -> Optional
 
 
 # Write your powers generator here
-def powers_generator(*, base, limit):
+def powers_generator(*, base: int, limit: int) -> Iterator[int]:
     exponent = 0
     while True:
         limit_test = base**exponent
@@ -39,22 +39,22 @@ def say(word=None):
     created_string = []
 
     def next_word(new_word=None):
-        if new_word == "":  # if empty string, add space to end of list
+        if new_word == "":  # empty string - add "" to end of list
             created_string.append((""))
-            return next_word  # chain
+            return next_word
 
-        if new_word:  # if non empty string, add new_word to end of created string
+        if new_word:  # non-empty string - add new_word to end of created string
             created_string.append(new_word)
-            return next_word  # chain
+            return next_word
 
-        else:  # not given anything --> say()
+        else:  # say() - return joined list
             return " ".join(created_string)
 
     return next_word(word)
 
 
 # Write your line count function here
-def meaningful_line_count(file_path):
+def meaningful_line_count(file_path: str, /) -> int:
     if not os.path.exists(file_path):
         raise FileNotFoundError("No such file")
 
