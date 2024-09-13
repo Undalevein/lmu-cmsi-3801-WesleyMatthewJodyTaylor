@@ -1,5 +1,5 @@
 /**
- * Author: Wesley Ng, Jody, and Matthew
+ * Author: Wesley Ng, Jody, Matthew, and Taylor
  * Collaborators: None
  * 
  */
