@@ -21,10 +21,19 @@ public class Exercises {
     }
 
     // Write your first then lower case function here
+    public static Optional<String> firstThenLowerCase(List<String> strings, Predicate<String> predicate) {
+        return strings.stream().filter(predicate).findFirst().map(String::toLowerCase);
+    }
 
     // Write your say function here
-
+    
     // Write your line count function here
+    public static int meaningfulLineCount(String filename) throws IOException {
+        try (FileReader in = new FileReader(filename)) {
+            BufferedReader br = new BufferedReader(in);
+            return (int)br.lines().filter(line -> !line.trim().isEmpty()).filter(line -> line.trim().charAt(0) != '#').count();
+        } 
+    }
 }
 
 // Write your Quaternion record class here
