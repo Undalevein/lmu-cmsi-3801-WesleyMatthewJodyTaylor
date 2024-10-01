@@ -51,6 +51,87 @@ class say {
 // Write your meaningfulLineCount function here
 
 // Write your Quaternion struct here
+struct Quaternion: Equatable, CustomStringConvertible {
+    let a: Double
+    let b: Double
+    let c: Double
+    let d: Double
+
+    static let ZERO = Quaternion(a: 0, b: 0, c: 0, d: 0)
+    static let I = Quaternion(a: 0, b: 1, c: 0, d: 0)
+    static let J = Quaternion(a: 0, b: 0, c: 1, d: 0)
+    static let K = Quaternion(a: 0, b: 0, c: 0, d: 1)
+
+    var coefficients: [Double] {
+        return [a, b, c, d]
+    }
+
+    var conjugate: Quaternion {
+        return Quaternion(a: a, b: -b, c: -c, d: -d)
+    }
+
+    // Convenience initializer
+    init(a: Double = 0, b: Double = 0, c: Double = 0, d: Double = 0) {
+        self.a = a
+        self.b = b
+        self.c = c
+        self.d = d
+    }
+
+    static func + (lhs: Quaternion, rhs: Quaternion) -> Quaternion {
+        return Quaternion(
+            a: lhs.a + rhs.a,
+            b: lhs.b + rhs.b,
+            c: lhs.c + rhs.c,
+            d: lhs.d + rhs.d
+        )
+    }
+
+    static func * (lhs: Quaternion, rhs: Quaternion) -> Quaternion {
+        let a1 = lhs.a, b1 = lhs.b, c1 = lhs.c, d1 = lhs.d
+        let a2 = rhs.a, b2 = rhs.b, c2 = rhs.c, d2 = rhs.d
+        return Quaternion(
+            a: a1 * a2 - b1 * b2 - c1 * c2 - d1 * d2,
+            b: a1 * b2 + b1 * a2 + c1 * d2 - d1 * c2,
+            c: a1 * c2 - b1 * d2 + c1 * a2 + d1 * b2,
+            d: a1 * d2 + b1 * c2 - c1 * b2 + d1 * a2
+        )
+    }
+
+    static func == (lhs: Quaternion, rhs: Quaternion) -> Bool {
+        return lhs.coefficients == rhs.coefficients
+    }
+
+    var description: String {
+        var parts: [String] = []
+
+        if a != 0 {
+            parts.append("\(a)")
+        }
+        
+        for (coeff, symbol) in [(b, "i"), (c, "j"), (d, "k")] {
+            if coeff != 0 {
+                let part: String
+                if abs(coeff) == 1 {
+                    part = "\(coeff < 0 ? "-" : "")\(symbol)"
+                } else {
+                    part = "\(coeff)\(symbol)"
+                }
+                parts.append(part)
+            }
+        }
+
+        if parts.isEmpty {
+            return "0"
+        }
+
+        var result = parts[0]
+        for part in parts.dropFirst() {
+            result += part.hasPrefix("-") ? part : "+" + part
+        }
+        return result
+    }
+}
 
 // Write your Binary Search Tree enum here
 enum BinarySearchTree: CustomStringConvertible{
