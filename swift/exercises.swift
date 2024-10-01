@@ -49,6 +49,19 @@ class say {
 }
 
 // Write your meaningfulLineCount function here
+func meaningfulLineCount(_ filename: String) async -> Result<Int, NoSuchFileError> {
+    do {
+        let contents = try await Task { () -> String in
+            let url = URL(fileURLWithPath: filename)
+            return try String(contentsOf: url)
+        }.value
+        
+        let lineCount = contents.split(separator: "\n").filter { !$0.isEmpty }.count
+        return .success(lineCount)
+    } catch {
+        return .failure(NoSuchFileError())
+    }
+}
 
 // Write your Quaternion struct here
 struct Quaternion: Equatable, CustomStringConvertible {
