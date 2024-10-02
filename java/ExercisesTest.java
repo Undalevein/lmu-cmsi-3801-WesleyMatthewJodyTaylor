@@ -58,39 +58,39 @@ public class ExercisesTest {
 
         // Uncomment the following tests as you complete the exercises
 
-        // suite("firstThenLowerCase");
-        // expect(Exercises.firstThenLowerCase(
-        //         List.of(), s -> !s.isEmpty()).isEmpty());
-        // expect(Exercises.firstThenLowerCase(
-        //         List.of("", "A", "B"), s -> !s.isEmpty()).get().equals("a"));
-        // expect(Exercises.firstThenLowerCase(
-        //         List.of("", "A", "ABC"), s -> s.length() > 3).isEmpty());
-        // expect(Exercises.firstThenLowerCase(
-        //         List.of("ABC", "ABCD", "ABCDE"), s -> s.length() > 3).get().equals("abcd"));
+        suite("firstThenLowerCase");
+        expect(Exercises.firstThenLowerCase(
+                List.of(), s -> !s.isEmpty()).isEmpty());
+        expect(Exercises.firstThenLowerCase(
+                List.of("", "A", "B"), s -> !s.isEmpty()).get().equals("a"));
+        expect(Exercises.firstThenLowerCase(
+                List.of("", "A", "ABC"), s -> s.length() > 3).isEmpty());
+        expect(Exercises.firstThenLowerCase(
+                List.of("ABC", "ABCD", "ABCDE"), s -> s.length() > 3).get().equals("abcd"));
 
-        // suite("say");
-        // expect(Exercises.say().phrase().equals(""));
-        // expect(Exercises.say("hi").phrase().equals("hi"));
-        // expect(Exercises.say("Oh").and("kay").phrase().equals("Oh kay"));
-        // expect(Exercises.say("hello").and("my").and("name").and("is").and("Colette").phrase()
-        //         .equals("hello my name is Colette"));
-        // expect(Exercises.say("h i").phrase().equals("h i"));
-        // expect(Exercises.say("hi ").and("   there").phrase().equals("hi     there"));
-        // expect(Exercises.say("").and("").and("dog").and("").and("go").phrase()
-        //         .equals("  dog  go"));
-        // expect(Exercises.say("🐤🦇").and("$🦊👏🏽").and("!").phrase().equals("🐤🦇 $🦊👏🏽 !"));
-        // expect(Exercises.say("😄🤗").and("💀👊🏾").phrase().equals("😄🤗 💀👊🏾"));
-        // // Ensure there is no sharing of partial states!
-        // var greet = Exercises.say("Hello").and("there");
-        // expect(greet.and("nice").and("person").phrase().equals("Hello there nice person"));
-        // expect(greet.and("Swift").phrase().equals("Hello there Swift"));
+        suite("say");
+        expect(Exercises.say().phrase().equals(""));
+        expect(Exercises.say("hi").phrase().equals("hi"));
+        expect(Exercises.say("Oh").and("kay").phrase().equals("Oh kay"));
+        expect(Exercises.say("hello").and("my").and("name").and("is").and("Colette").phrase()
+                .equals("hello my name is Colette"));
+        expect(Exercises.say("h i").phrase().equals("h i"));
+        expect(Exercises.say("hi ").and("   there").phrase().equals("hi     there"));
+        expect(Exercises.say("").and("").and("dog").and("").and("go").phrase()
+                .equals("  dog  go"));
+        expect(Exercises.say("🐤🦇").and("$🦊👏🏽").and("!").phrase().equals("🐤🦇 $🦊👏🏽 !"));
+        expect(Exercises.say("😄🤗").and("💀👊🏾").phrase().equals("😄🤗 💀👊🏾"));
+        // Ensure there is no sharing of partial states!
+        var greet = Exercises.say("Hello").and("there");
+        expect(greet.and("nice").and("person").phrase().equals("Hello there nice person"));
+        expect(greet.and("Swift").phrase().equals("Hello there Swift"));
 
-        // suite("meaningfulLineCount");
-        // expectToThrow(
-        //     () -> Exercises.meaningfulLineCount("no-such-file.txt"),
-        //     FileNotFoundException.class,
-        //     "No such file");
-        // expect(Exercises.meaningfulLineCount("../test-for-line-count.txt") == 5);
+        suite("meaningfulLineCount");
+        expectToThrow(
+            () -> Exercises.meaningfulLineCount("no-such-file.txt"),
+            FileNotFoundException.class,
+            "No such file");
+        expect(Exercises.meaningfulLineCount("../test-for-line-count.txt") == 5);
 
         // suite("Quaternion");
         // expectToThrow(() -> new Quaternion(Double.NaN, 0, 0, 0),
