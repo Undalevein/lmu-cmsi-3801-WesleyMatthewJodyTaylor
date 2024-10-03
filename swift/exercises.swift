@@ -50,15 +50,26 @@ class say {
 
 // Write your meaningfulLineCount function here
 func meaningfulLineCount(_ filename: String) async -> Result<Int, NoSuchFileError> {
+    let url = URL(fileURLWithPath: filename)
+    
     do {
-        let contents = try await Task { () -> String in
-            let url = URL(fileURLWithPath: filename)
-            return try String(contentsOf: url)
-        }.value
+        let contents = try await String(contentsOf: url, encoding: .utf8)
         
-        let lineCount = contents.split(separator: "\n").filter { !$0.isEmpty }.count
-        return .success(lineCount)
+        let validLines = contents.split(separator: "\n").reduce(0) { count, line in
+            let trimmedLine = line.trimmingCharacters(in: .whitespacesAndNewlines)
+            // Check if the line is not empty and does not start with '#'
+            if !trimmedLine.isEmpty && !trimmedLine.hasPrefix("#") {
+                return count + 1
+            }
+            return count
+        }
+        
+        return .success(validLines)
     } catch {
+        let nsError = error as NSError
+        if nsError.domain == NSCocoaErrorDomain && nsError.code == NSFileNoSuchFileError {
+            return .failure(NoSuchFileError())
+        }
         return .failure(NoSuchFileError())
     }
 }
