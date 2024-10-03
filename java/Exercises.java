@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 public class Exercises {
     static Map<Integer, Long> change(long amount) {
@@ -63,5 +64,76 @@ public class Exercises {
 }
 
 // Write your Quaternion record class here
+
+record Quaternion(double a, double b, double c, double d) {
+    public static final Quaternion ZERO = new Quaternion(0, 0, 0, 0);
+    public static final Quaternion I = new Quaternion(0, 1, 0, 0);
+    public static final Quaternion J = new Quaternion(0, 0, 1, 0);
+    public static final Quaternion K = new Quaternion(0, 0, 0, 1);
+
+    public Quaternion {
+        if (Double.isNaN(a) || Double.isNaN(b) || Double.isNaN(c) || Double.isNaN(d)) {
+            throw new IllegalArgumentException("Coefficients cannot be NaN");
+        }
+    }
+
+    public Quaternion plus(Quaternion other) {
+        return new Quaternion(
+            a + other.a,
+            b + other.b,
+            c + other.c,
+            d + other.d
+        );
+    }
+
+    public Quaternion times(Quaternion other) {
+        return new Quaternion(
+            a * other.a - b * other.b - c * other.c - d * other.d, 
+            a * other.b + b * other.a + c * other.d - d * other.c, 
+            a * other.c - b * other.d + c * other.a + d * other.b, 
+            a * other.d + b * other.c - c * other.b + d * other.a  
+        );
+    }
+
+    public List<Double> coefficients() {
+        return List.of(a, b, c, d);
+    }
+
+    public boolean equals(Quaternion other) {
+        return coefficients().equals(other.coefficients());
+    }
+
+    public Quaternion conjugate() {
+        return new Quaternion(a, -b, -c, -d);
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        
+        if (a != 0) {
+            sb.append(a);
+        }
+        if (b != 0) {
+            if (b > 0 && sb.length() > 0) {
+                sb.append("+");
+            }
+            sb.append(b == 1 ? "i" : (b == -1 ? "-i" : b + "i")); 
+        }
+        if (c != 0) {
+            if (c > 0 && sb.length() > 0) {
+                sb.append("+"); 
+            }
+            sb.append(c == 1 ? "j" : (c == -1 ? "-j" : c + "j"));
+        }
+        if (d != 0) {
+            if (d > 0 && sb.length() > 0) {
+                sb.append("+"); 
+            }
+            sb.append(d == 1 ? "k" : (d == -1 ? "-k" : d + "k")); 
+        }
+    return sb.length() > 0 ? sb.toString() : "0";
+    }
+
+}
 
 // Write your BinarySearchTree sealed interface and its implementations here
