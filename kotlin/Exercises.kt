@@ -1,6 +1,7 @@
 import java.io.BufferedReader
 import java.io.FileReader
 import java.io.IOException
+import kotlin.math.abs
 
 fun change(amount: Long): Map<Int, Long> {
     require(amount >= 0) { "Amount cannot be negative" }
@@ -31,10 +32,10 @@ fun say(firstWord: String = ""): PhraseConstructor{
 }
 
 // Write your meaningfulLineCount function here
-@throwIOError
+// NOTE: The test for error throw is because I am working on Windows.
+@Throws(IOException::class)
 fun meaningfulLineCount(filePath: String): Long {
     var counter: Long = 0L
-    
     BufferedReader(FileReader(filePath)).use {
         input ->
         var line: String? 
@@ -55,30 +56,95 @@ data class Quaternion(
     val c: Double, 
     val d: Double
 ){
-    //companion object {
-    //    const val ZERO = Quaternion(0.0, 0.0, 0.0, 0.0)
-    //    const val I = Quaternion(0.0, 1.0, 0.0, 0.0)
-    //    const val J = Quaternion(0.0, 0.0, 1.0, 0.0)
-    //    const val K = Quaternion(0.0, 0.0, 0.0, 1.0)
-    //}
-    
-    fun coefficients(): List<Double> {
-        return listOf(a, b, c, d)
+    init {
+        require(!a.isNaN() && !b.isNaN() && !c.isNaN() && !d.isNaN()){
+            "Numbers can not be NaN"
+        }
     }
 
+    companion object {
+        val ZERO = Quaternion(0.0, 0.0, 0.0, 0.0)
+        val I = Quaternion(0.0, 1.0, 0.0, 0.0)
+        val J = Quaternion(0.0, 0.0, 1.0, 0.0)
+        val K = Quaternion(0.0, 0.0, 0.0, 1.0)
+    }
     
+    fun coefficients(): List<Double> {
+        return listOf(this.a, this.b, this.c, this.d)
+    }
+
+    fun conjugate(): Quaternion {
+        return Quaternion(this.a, -this.b, -this.c, -this.d)
+    }
+
+    operator fun plus(other: Quaternion): Quaternion {
+        return Quaternion(
+            this.a + other.a,
+            this.b + other.b,
+            this.c + other.c,
+            this.d + other.d
+        )
+    }
+
+    operator fun times(other: Quaternion): Quaternion {
+        return Quaternion(
+            this.a * other.a - this.b * other.b - this.c * other.c - this.d * other.d,
+            this.a * other.b + this.b * other.a + this.c * other.d - this.d * other.c,
+            this.a * other.c + this.c * other.a - this.b * other.d + this.d * other.b,
+            this.a * other.d + this.d * other.a + this.b * other.c - this.c * other.b
+        )
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Quaternion) return false
+        return this.a == other.a && this.b == other.b && this.c == other.c && this.d == other.d
+    }
+
+    override fun toString(): String {
+        // Base case: 
+        if (this == Quaternion.ZERO) {
+            return "0"
+        }
+
+        // Creates a (almost) perfect Quaternion string!
+        val constant: String = if (this.a != 0.0) "${this.a}" else ""
+        val equation: String = constant + innerNominal(this.b, "i") + innerNominal(this.c, "j") + innerNominal(this.d, "k")
+
+        // If the equation begins with a "+", remove it before returning
+        return if (equation.firstOrNull() == '+') equation.substring(1) else equation
+    }
+
+    private fun innerNominal(num: Double, variable: String): String{
+        val sign: String = if (num > 0.0) "+" else (if (num < 0.0) "-" else "")
+        val nominal: String = if (num == 0.0) "" else (if (Math.abs(num) == 1.0) "$variable" else "${Math.abs(num)}$variable")
+        return sign + nominal
+    }
 }
+
+
 
 // Write your Binary Search Tree interface and implementing classes here
-sealed interface BinarySearchTree {
+    // data class Node (
+    //     val parent: Node
+    //     var item: String
 
-    fun size(): Int 
-    fun contains(item: String): Boolean
-    fun insert(item: String): None
-    override fun toString(): String
+    //     operator fun compareTo(other: Node): Boolean = this.item.compareTo(other.item) < 0
+    // ) {
 
-}
+    // }
 
-data class Empty(
-    override val 
-) : BinarySearchTree
+    // sealed interface BinarySearchTree {
+
+    //     val root: Node
+
+    //     fun size(): Int 
+    //     fun contains(item: String): Boolean
+    //     fun insert(item: String): None
+    //     override fun toString(): String
+
+    // }
+
+    // data class Empty(
+    //     override val root = null
+    // ) : BinarySearchTree
