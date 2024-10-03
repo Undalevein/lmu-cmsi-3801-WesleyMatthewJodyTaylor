@@ -23,7 +23,7 @@ public class Exercises {
     }
 
     // Write your first then lower case function here
-    public static Optional<String> firstThenLowerCase(List<String> strings, Predicate<String> predicate) {
+    static Optional<String> firstThenLowerCase(List<String> strings, Predicate<String> predicate) {
         return strings.stream().filter(predicate).findFirst().map(String::toLowerCase);
     }
 
@@ -53,7 +53,7 @@ public class Exercises {
     }
 
     // Write your line count function here
-    public static int meaningfulLineCount(String filename) throws IOException {
+    static int meaningfulLineCount(String filename) throws IOException {
         try (FileReader in = new FileReader(filename)) {
             BufferedReader br = new BufferedReader(in);
             return (int) br.lines().filter(line -> !line.trim().isEmpty()).filter(line -> line.trim().charAt(0) != '#').count();
@@ -66,10 +66,10 @@ public class Exercises {
 // Write your Quaternion record class here
 
 record Quaternion(double a, double b, double c, double d) {
-    public static final Quaternion ZERO = new Quaternion(0, 0, 0, 0);
-    public static final Quaternion I = new Quaternion(0, 1, 0, 0);
-    public static final Quaternion J = new Quaternion(0, 0, 1, 0);
-    public static final Quaternion K = new Quaternion(0, 0, 0, 1);
+    static final Quaternion ZERO = new Quaternion(0, 0, 0, 0);
+    static final Quaternion I = new Quaternion(0, 1, 0, 0);
+    static final Quaternion J = new Quaternion(0, 0, 1, 0);
+    static final Quaternion K = new Quaternion(0, 0, 0, 1);
 
     public Quaternion {
         if (Double.isNaN(a) || Double.isNaN(b) || Double.isNaN(c) || Double.isNaN(d)) {
@@ -97,10 +97,6 @@ record Quaternion(double a, double b, double c, double d) {
 
     public List<Double> coefficients() {
         return List.of(a, b, c, d);
-    }
-
-    public boolean equals(Quaternion other) {
-        return coefficients().equals(other.coefficients());
     }
 
     public Quaternion conjugate() {
