@@ -43,27 +43,26 @@ class say {
     }
 }
 
-func meaningfulLineCount(_ filename: String) async -> Result<Int, NoSuchFileError> {
+func meaningfulLineCount(_ filename: String) async -> Result<Int, Error> {
     let url = URL(fileURLWithPath: filename)
     
     do {
-        let contents = try await String(contentsOf: url, encoding: .utf8)
+        let fileHandle = try FileHandle(forReadingFrom: url)
+        defer {
+            try? fileHandle.close()
+        }
         
-        let validLines = contents.split(separator: "\n").reduce(0) { count, line in
+        var count = 0
+        for try await line in fileHandle.bytes.lines {
             let trimmedLine = line.trimmingCharacters(in: .whitespacesAndNewlines)
             if !trimmedLine.isEmpty && !trimmedLine.hasPrefix("#") {
-                return count + 1
+                count += 1
             }
-            return count
         }
         
-        return .success(validLines)
+        return .success(count)
     } catch {
-        let nsError = error as NSError
-        if nsError.domain == NSCocoaErrorDomain && nsError.code == NSFileNoSuchFileError {
-            return .failure(NoSuchFileError())
-        }
-        return .failure(NoSuchFileError())
+        return .failure(error)
     }
 }
 
