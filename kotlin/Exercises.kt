@@ -125,11 +125,11 @@ data class Quaternion(
 sealed interface BinarySearchTree {
     fun size(): Int
     fun contains(target: String): Boolean
-    fun insert(item: String) : BinarySearchTree
+    fun insert(itemValue: String) : BinarySearchTree
     override fun toString(): String
 
     data class TreeNode(
-        val item: String, 
+        val itemValue: String, 
         val left: BinarySearchTree = BinarySearchTree.Empty, 
         val right: BinarySearchTree = BinarySearchTree.Empty
     ) : BinarySearchTree {
@@ -139,24 +139,24 @@ sealed interface BinarySearchTree {
         }
 
         override fun contains(target: String) : Boolean {
-            return item == target || left.contains(target) || right.contains(target)
+            return itemValue == target || left.contains(target) || right.contains(target)
         }
 
-        override fun insert(newItem: String) : BinarySearchTree { 
-            val comparison = newItem.compareTo(item)
+        override fun insert(newitemValue: String) : BinarySearchTree { 
+            val comparison = newitemValue.compareTo(itemValue)
             if (comparison < 0) {
-                return TreeNode(this.item, left.insert(newItem), right)
+                return TreeNode(this.itemValue, left.insert(newitemValue), right)
             } else if (comparison > 0) {
-                return TreeNode(this.item, left, right.insert(newItem))
+                return TreeNode(this.itemValue, left, right.insert(newitemValue))
             } else {
-                return TreeNode(this.item, left, right)
+                return TreeNode(this.itemValue, left, right)
             }
         }
 
         override fun toString(): String {
             val leftString = if (left != BinarySearchTree.Empty) "${left}" else "" 
             val rightString = if (right != BinarySearchTree.Empty) "${right}" else "" 
-            return "(${leftString}${item}${rightString})"
+            return "(${leftString}${itemValue}${rightString})"
         }
     }
 
@@ -169,8 +169,8 @@ sealed interface BinarySearchTree {
             return false
         }
 
-        override fun insert(item: String) : BinarySearchTree {
-            val root: BinarySearchTree = TreeNode(item)
+        override fun insert(itemValue: String) : BinarySearchTree {
+            val root: BinarySearchTree = TreeNode(itemValue)
             return root
         }
 
