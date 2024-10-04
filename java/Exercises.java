@@ -22,12 +22,10 @@ public class Exercises {
         return counts;
     }
 
-    // Write your first then lower case function here
     static Optional<String> firstThenLowerCase(List<String> strings, Predicate<String> predicate) {
         return strings.stream().filter(predicate).findFirst().map(String::toLowerCase);
     }
 
-    // Write your say function here
     static record Sayer(String phrase) {
 
         Sayer and(String word) {
@@ -45,27 +43,26 @@ public class Exercises {
     }
 
     public static Sayer say() {
-        return new Sayer ("");
+        return new Sayer("");
     }
 
     public static Sayer say(String word) {
         return new Sayer(word);
     }
 
-    // Write your line count function here
     static int meaningfulLineCount(String filename) throws IOException {
         try (FileReader in = new FileReader(filename)) {
             BufferedReader br = new BufferedReader(in);
-            return (int) br.lines().filter(line -> !line.trim().isEmpty()).filter(line -> line.trim().charAt(0) != '#').count();
+            return (int) br.lines().filter(line -> !line.trim().isEmpty()).filter(line -> line.trim().charAt(0) != '#')
+                    .count();
         } catch (IOException e) {
             throw new FileNotFoundException("No such file");
         }
     }
 }
 
-// Write your Quaternion record class here
-
 record Quaternion(double a, double b, double c, double d) {
+
     static final Quaternion ZERO = new Quaternion(0, 0, 0, 0);
     static final Quaternion I = new Quaternion(0, 1, 0, 0);
     static final Quaternion J = new Quaternion(0, 0, 1, 0);
@@ -79,20 +76,18 @@ record Quaternion(double a, double b, double c, double d) {
 
     public Quaternion plus(Quaternion other) {
         return new Quaternion(
-            a + other.a,
-            b + other.b,
-            c + other.c,
-            d + other.d
-        );
+                a + other.a,
+                b + other.b,
+                c + other.c,
+                d + other.d);
     }
 
     public Quaternion times(Quaternion other) {
         return new Quaternion(
-            a * other.a - b * other.b - c * other.c - d * other.d, 
-            a * other.b + b * other.a + c * other.d - d * other.c, 
-            a * other.c - b * other.d + c * other.a + d * other.b, 
-            a * other.d + b * other.c - c * other.b + d * other.a  
-        );
+                a * other.a - b * other.b - c * other.c - d * other.d,
+                a * other.b + b * other.a + c * other.d - d * other.c,
+                a * other.c - b * other.d + c * other.a + d * other.b,
+                a * other.d + b * other.c - c * other.b + d * other.a);
     }
 
     public List<Double> coefficients() {
@@ -105,13 +100,13 @@ record Quaternion(double a, double b, double c, double d) {
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        
+
         if (a != 0) {
             sb.append(a);
         }
 
-        double[] coeffs = {b, c, d};
-        String[] symbols = {"i", "j", "k"};
+        double[] coeffs = { b, c, d };
+        String[] symbols = { "i", "j", "k" };
         for (int i = 0; i < coeffs.length; i++) {
             double coeff = coeffs[i];
             String symbol = symbols[i];
@@ -121,13 +116,12 @@ record Quaternion(double a, double b, double c, double d) {
                 }
                 if (Math.abs(coeff) == 1) {
                     sb.append(coeff == -1 ? "-" + symbol : symbol);
-                }
-                else {
-                    sb.append(coeff + symbol); 
+                } else {
+                    sb.append(coeff + symbol);
                 }
             }
         }
-        
+
         if (sb.length() == 0) {
             return "0";
         }
@@ -136,10 +130,11 @@ record Quaternion(double a, double b, double c, double d) {
 
 }
 
-// Write your BinarySearchTree sealed interface and its implementations here
 sealed interface BinarySearchTree permits Empty, Node {
     int size();
+
     boolean contains(String value);
+
     BinarySearchTree insert(String value);
 }
 
@@ -149,7 +144,7 @@ final record Empty() implements BinarySearchTree {
         return 0;
     }
 
-    @Override 
+    @Override
     public boolean contains(String value) {
         return false;
     }

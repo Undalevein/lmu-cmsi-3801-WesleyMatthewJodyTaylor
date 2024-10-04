@@ -15,7 +15,6 @@ func change(_ amount: Int) -> Result<[Int:Int], NegativeAmountError> {
     return .success(counts)
 }
 
-// Write your first then lower case function here
 func firstThenLowerCase<T>(of array: [T], satisfying predicate: (T) -> Bool) -> String? where T: StringProtocol {
     for element in array {
         if predicate(element) {
@@ -25,7 +24,6 @@ func firstThenLowerCase<T>(of array: [T], satisfying predicate: (T) -> Bool) -> 
     return nil
 }
 
-// Write your say function here
 class say {
     private var words: [String] = []
 
@@ -48,7 +46,6 @@ class say {
     }
 }
 
-// Write your meaningfulLineCount function here
 func meaningfulLineCount(_ filename: String) async -> Result<Int, NoSuchFileError> {
     let url = URL(fileURLWithPath: filename)
     
@@ -74,7 +71,6 @@ func meaningfulLineCount(_ filename: String) async -> Result<Int, NoSuchFileErro
     }
 }
 
-// Write your Quaternion struct here
 struct Quaternion: Equatable, CustomStringConvertible {
     let a: Double
     let b: Double
@@ -157,7 +153,6 @@ struct Quaternion: Equatable, CustomStringConvertible {
     }
 }
 
-// Write your Binary Search Tree enum here
 enum BinarySearchTree: CustomStringConvertible{
     case empty
     indirect case node(BinarySearchTree, String, BinarySearchTree)
