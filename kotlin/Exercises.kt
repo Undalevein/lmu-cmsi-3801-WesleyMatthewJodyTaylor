@@ -1,7 +1,6 @@
 /**
  * Author: Wesley, Jody, Matthew, and Taylor
  * Collaborators: Ray Toal
- * 
  */
 
 import java.io.BufferedReader
@@ -129,42 +128,29 @@ sealed interface BinarySearchTree {
     fun insert(item: String) : BinarySearchTree
     override fun toString(): String
 
-    data class Node(val item: String) : BinarySearchTree {
-        private var left: BinarySearchTree = BinarySearchTree.Empty
-        private var right: BinarySearchTree = BinarySearchTree.Empty
+    data class TreeNode(
+        val item: String, 
+        val left: BinarySearchTree = BinarySearchTree.Empty, 
+        val right: BinarySearchTree = BinarySearchTree.Empty
+    ) : BinarySearchTree {
 
         override fun size() : Int {
             return left.size() + 1 + right.size()  
         }
 
         override fun contains(target: String) : Boolean {
-            val comparison = target.compareTo(item)
-            if (comparison < 0) {
-                return if (left == BinarySearchTree.Empty) false else left.contains(target)
-            } else if (comparison > 0) {
-                return if (right == BinarySearchTree.Empty) false else right.contains(target)
-            } else {
-                return true
-            }
+            return item == target || left.contains(target) || right.contains(target)
         }
 
         override fun insert(newItem: String) : BinarySearchTree { 
             val comparison = newItem.compareTo(item)
             if (comparison < 0) {
-                if (left == BinarySearchTree.Empty) {
-                    left = Node(newItem)
-                } else {
-                    left = left.insert(newItem)
-                }
+                return TreeNode(this.item, left.insert(newItem), right)
             } else if (comparison > 0) {
-                if (right == BinarySearchTree.Empty) {
-                    right = Node(newItem)
-                } else {
-                    right = right.insert(newItem)
-                }
+                return TreeNode(this.item, left, right.insert(newItem))
+            } else {
+                return TreeNode(this.item, left, right)
             }
-
-            return this
         }
 
         override fun toString(): String {
@@ -184,7 +170,7 @@ sealed interface BinarySearchTree {
         }
 
         override fun insert(item: String) : BinarySearchTree {
-            val root: BinarySearchTree = Node(item)
+            val root: BinarySearchTree = TreeNode(item)
             return root
         }
 
