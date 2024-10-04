@@ -7,7 +7,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.lang.Math;
 
 public class Exercises {
     static Map<Integer, Long> change(long amount) {
@@ -109,27 +109,96 @@ record Quaternion(double a, double b, double c, double d) {
         if (a != 0) {
             sb.append(a);
         }
-        if (b != 0) {
-            if (b > 0 && sb.length() > 0) {
-                sb.append("+");
+
+        double[] coeffs = {b, c, d};
+        String[] symbols = {"i", "j", "k"};
+        for (int i = 0; i < coeffs.length; i++) {
+            double coeff = coeffs[i];
+            String symbol = symbols[i];
+            if (coeff != 0) {
+                if (coeff > 0 && sb.length() > 0) {
+                    sb.append("+");
+                }
+                if (Math.abs(coeff) == 1) {
+                    sb.append(coeff == -1 ? "-" + symbol : symbol);
+                }
+                else {
+                    sb.append(coeff + symbol); 
+                }
             }
-            sb.append(b == 1 ? "i" : (b == -1 ? "-i" : b + "i")); 
         }
-        if (c != 0) {
-            if (c > 0 && sb.length() > 0) {
-                sb.append("+"); 
-            }
-            sb.append(c == 1 ? "j" : (c == -1 ? "-j" : c + "j"));
+        
+        if (sb.length() == 0) {
+            return "0";
         }
-        if (d != 0) {
-            if (d > 0 && sb.length() > 0) {
-                sb.append("+"); 
-            }
-            sb.append(d == 1 ? "k" : (d == -1 ? "-k" : d + "k")); 
-        }
-    return sb.length() > 0 ? sb.toString() : "0";
+        return sb.toString();
     }
 
 }
 
 // Write your BinarySearchTree sealed interface and its implementations here
+sealed interface BinarySearchTree permits Empty, Node {
+    int size();
+    boolean contains(String value);
+    BinarySearchTree insert(String value);
+}
+
+final record Empty() implements BinarySearchTree {
+    @Override
+    public int size() {
+        return 0;
+    }
+
+    @Override 
+    public boolean contains(String value) {
+        return false;
+    }
+
+    @Override
+    public BinarySearchTree insert(String value) {
+        return new Node(value, this, this);
+    }
+
+    @Override
+    public String toString() {
+        return "()";
+    }
+}
+
+final class Node implements BinarySearchTree {
+    private final String value;
+    private final BinarySearchTree left;
+    private final BinarySearchTree right;
+
+    Node(String value, BinarySearchTree left, BinarySearchTree right) {
+        this.value = value;
+        this.left = left;
+        this.right = right;
+    }
+
+    @Override
+    public int size() {
+        return 1 + left.size() + right.size();
+    }
+
+    @Override
+    public boolean contains(String value) {
+        return this.value.equals(value) || left.contains(value) || right.contains(value);
+    }
+
+    @Override
+    public BinarySearchTree insert(String value) {
+        if (value.compareTo(this.value) > 0) {
+            return new Node(this.value, left, right.insert(value));
+        } else {
+            return new Node(this.value, left.insert(value), right);
+        }
+    }
+
+    @Override
+    public String toString() {
+        String leftStr = (left instanceof Empty) ? "" : left.toString();
+        String rightStr = (right instanceof Empty) ? "" : right.toString();
+        return "(" + leftStr + value + rightStr + ")";
+    }
+}
