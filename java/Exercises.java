@@ -59,8 +59,10 @@ public class Exercises {
     static int meaningfulLineCount(String filename) throws IOException {
         try (FileReader in = new FileReader(filename)) {
             BufferedReader br = new BufferedReader(in);
-            return (int) br.lines().filter(line -> !line.trim().isEmpty()).filter(line -> line.trim().charAt(0) != '#')
-                    .count();
+            return (int) br.lines()
+                           .filter(line -> !line.trim().isEmpty())
+                           .filter(line -> line.trim().charAt(0) != '#')
+                           .count();
         } catch (IOException e) {
             throw new FileNotFoundException("No such file");
         }
