@@ -1,3 +1,9 @@
+/**
+ * Author: Wesley, Jody, Matthew, and Taylor
+ * Collaborators: Ray Toal
+ * 
+ */
+
 import java.io.BufferedReader
 import java.io.FileReader
 import java.io.IOException
@@ -157,7 +163,7 @@ sealed interface BinarySearchTree {
                     right = right.insert(newItem)
                 }
             }
-            // Returns a copy of a new BinarySearchTree after insertion.
+
             return this
         }
 
