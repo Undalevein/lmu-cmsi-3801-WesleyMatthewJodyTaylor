@@ -21,6 +21,10 @@ fun change(amount: Long): Map<Int, Long> {
 }
 
 fun firstThenLowerCase(words: List<String>, predicate: (it: String) -> Boolean): String? {
+    /**
+     *  Finds the first word in the list that follows the given predicate,
+     *  then returns that word lowercased.
+     */
     return words.filter(predicate).getOrNull(0)?.lowercase()
 }
 
@@ -31,11 +35,21 @@ data class PhraseConstructor(val phrase: String) {
 }
 
 fun say(phrase: String = "") : PhraseConstructor {
+    /**
+     *  A compounding method starting with say functions, then multiple
+     *  and functions and ends with calling phrase. Creates a sentence where
+     *  each phrase is added to the sentence with spaces in between.
+     */
     return PhraseConstructor(phrase)
 }
 
 @Throws(IOException::class)
 fun meaningfulLineCount(filePath: String): Long {
+    /**
+     *  Counts all of the lines in a given file where it contains
+     *  characters (not whitespaces) and does not begin with a hashtag
+     *  symbol (#).
+     */
     var counter: Long = 0L
     BufferedReader(FileReader(filePath)).use {
         input ->
