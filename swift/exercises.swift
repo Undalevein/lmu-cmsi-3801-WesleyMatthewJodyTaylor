@@ -1,3 +1,8 @@
+/**
+ * Author: Wesley, Jody, Matthew, and Taylor
+ * Collaborators: Ray Toal
+ */
+
 import Foundation
 
 struct NegativeAmountError: Error {}
@@ -20,7 +25,6 @@ func firstThenLowerCase(of strings: [String], satisfying predicate: (String) -> 
     return strings.first(where: predicate)?.lowercased()
 }
 
-// Write your say function here
 class say {
     private var words: [String] = []
 
@@ -40,7 +44,6 @@ class say {
     }
 }
 
-// Write your meaningfulLineCount function here
 func meaningfulLineCount(_ filename: String) async -> Result<Int, NoSuchFileError> {
     let url = URL(fileURLWithPath: filename)
     
@@ -65,7 +68,6 @@ func meaningfulLineCount(_ filename: String) async -> Result<Int, NoSuchFileErro
     }
 }
 
-// Write your Quaternion struct here
 struct Quaternion: Equatable, CustomStringConvertible {
     let a: Double
     let b: Double
@@ -147,7 +149,6 @@ struct Quaternion: Equatable, CustomStringConvertible {
     }
 }
 
-// Write your Binary Search Tree enum here
 enum BinarySearchTree: CustomStringConvertible{
     case empty
     indirect case node(BinarySearchTree, String, BinarySearchTree)
