@@ -20,24 +20,17 @@ func change(_ amount: Int) -> Result<[Int:Int], NegativeAmountError> {
     return .success(counts)
 }
 
-func firstThenLowerCase<T>(of array: [T], satisfying predicate: (T) -> Bool) -> String? where T: StringProtocol {
-    for element in array {
-        if predicate(element) {
-            return element.lowercased()
-        }
-    }
-    return nil
+func firstThenLowerCase(of strings: [String], satisfying predicate: (String) -> Bool) -> String?{
+    return strings.first(where: predicate)?.lowercased()
 }
 
 class say {
     private var words: [String] = []
 
-    // Initializer for starting with an optional initial word
     init(_ word: String? = nil) {
         self.words = word != nil ? [word!] : []
     }
 
-    // Method to add a word to the chain
     @discardableResult
     func and(_ word: String) -> say {
         let newSay = say()
@@ -45,7 +38,6 @@ class say {
         return newSay
     }
 
-    // Read-only property to get the accumulated phrase
     var phrase: String {
         return words.joined(separator: " ")
     }
@@ -59,7 +51,6 @@ func meaningfulLineCount(_ filename: String) async -> Result<Int, NoSuchFileErro
         
         let validLines = contents.split(separator: "\n").reduce(0) { count, line in
             let trimmedLine = line.trimmingCharacters(in: .whitespacesAndNewlines)
-            // Check if the line is not empty and does not start with '#'
             if !trimmedLine.isEmpty && !trimmedLine.hasPrefix("#") {
                 return count + 1
             }
@@ -95,7 +86,6 @@ struct Quaternion: Equatable, CustomStringConvertible {
         return Quaternion(a: a, b: -b, c: -c, d: -d)
     }
 
-    // Convenience initializer
     init(a: Double = 0, b: Double = 0, c: Double = 0, d: Double = 0) {
         self.a = a
         self.b = b
