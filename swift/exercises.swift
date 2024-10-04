@@ -1,3 +1,8 @@
+/**
+ * Author: Wesley, Jody, Matthew, and Taylor
+ * Collaborators: Ray Toal
+ */
+
 import Foundation
 
 struct NegativeAmountError: Error {}
