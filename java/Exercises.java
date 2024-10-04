@@ -1,3 +1,9 @@
+
+/**
+ * Author: Wesley, Jody, Matthew, and Taylor
+ * Collaborators: Ray Toal
+ */
+
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
