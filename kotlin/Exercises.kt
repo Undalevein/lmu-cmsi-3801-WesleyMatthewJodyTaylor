@@ -1,7 +1,6 @@
 /**
  * Author: Wesley, Jody, Matthew, and Taylor
  * Collaborators: Ray Toal
- * 
  */
 
 import java.io.BufferedReader
@@ -22,6 +21,10 @@ fun change(amount: Long): Map<Int, Long> {
 }
 
 fun firstThenLowerCase(words: List<String>, predicate: (it: String) -> Boolean): String? {
+    /**
+     *  Finds the first word in the list that follows the given predicate,
+     *  then returns that word lowercased.
+     */
     return words.filter(predicate).getOrNull(0)?.lowercase()
 }
 
@@ -32,11 +35,21 @@ data class PhraseConstructor(val phrase: String) {
 }
 
 fun say(phrase: String = "") : PhraseConstructor {
+    /**
+     *  A compounding method starting with say functions, then multiple
+     *  and functions and ends with calling phrase. Creates a sentence where
+     *  each phrase is added to the sentence with spaces in between.
+     */
     return PhraseConstructor(phrase)
 }
 
 @Throws(IOException::class)
 fun meaningfulLineCount(filePath: String): Long {
+    /**
+     *  Counts all of the lines in a given file where it contains
+     *  characters (not whitespaces) and does not begin with a hashtag
+     *  symbol (#).
+     */
     var counter: Long = 0L
     BufferedReader(FileReader(filePath)).use {
         input ->
@@ -126,51 +139,38 @@ data class Quaternion(
 sealed interface BinarySearchTree {
     fun size(): Int
     fun contains(target: String): Boolean
-    fun insert(item: String) : BinarySearchTree
+    fun insert(itemValue: String) : BinarySearchTree
     override fun toString(): String
 
-    data class Node(val item: String) : BinarySearchTree {
-        private var left: BinarySearchTree = BinarySearchTree.Empty
-        private var right: BinarySearchTree = BinarySearchTree.Empty
+    data class TreeNode(
+        val itemValue: String, 
+        val left: BinarySearchTree = BinarySearchTree.Empty, 
+        val right: BinarySearchTree = BinarySearchTree.Empty
+    ) : BinarySearchTree {
 
         override fun size() : Int {
             return left.size() + 1 + right.size()  
         }
 
         override fun contains(target: String) : Boolean {
-            val comparison = target.compareTo(item)
-            if (comparison < 0) {
-                return if (left == BinarySearchTree.Empty) false else left.contains(target)
-            } else if (comparison > 0) {
-                return if (right == BinarySearchTree.Empty) false else right.contains(target)
-            } else {
-                return true
-            }
+            return itemValue == target || left.contains(target) || right.contains(target)
         }
 
-        override fun insert(newItem: String) : BinarySearchTree { 
-            val comparison = newItem.compareTo(item)
+        override fun insert(newitemValue: String) : BinarySearchTree { 
+            val comparison = newitemValue.compareTo(itemValue)
             if (comparison < 0) {
-                if (left == BinarySearchTree.Empty) {
-                    left = Node(newItem)
-                } else {
-                    left = left.insert(newItem)
-                }
+                return TreeNode(this.itemValue, left.insert(newitemValue), right)
             } else if (comparison > 0) {
-                if (right == BinarySearchTree.Empty) {
-                    right = Node(newItem)
-                } else {
-                    right = right.insert(newItem)
-                }
+                return TreeNode(this.itemValue, left, right.insert(newitemValue))
+            } else {
+                return TreeNode(this.itemValue, left, right)
             }
-
-            return this
         }
 
         override fun toString(): String {
             val leftString = if (left != BinarySearchTree.Empty) "${left}" else "" 
             val rightString = if (right != BinarySearchTree.Empty) "${right}" else "" 
-            return "(${leftString}${item}${rightString})"
+            return "(${leftString}${itemValue}${rightString})"
         }
     }
 
@@ -183,8 +183,8 @@ sealed interface BinarySearchTree {
             return false
         }
 
-        override fun insert(item: String) : BinarySearchTree {
-            val root: BinarySearchTree = Node(item)
+        override fun insert(itemValue: String) : BinarySearchTree {
+            val root: BinarySearchTree = TreeNode(itemValue)
             return root
         }
 

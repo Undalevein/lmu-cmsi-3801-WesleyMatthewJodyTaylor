@@ -35,15 +35,12 @@ public class Exercises {
     static record Sayer(String phrase) {
 
         Sayer and(String word) {
-            // word = "" --> add space
             if (word.isEmpty()) {
                 return new Sayer(this.phrase + " ");
             }
-            // phrase starts with no words --> add 1st word
             if (this.phrase.isEmpty()) {
                 return new Sayer(word);
             }
-            // add a space + new word to the already made phrase
             return new Sayer(this.phrase + " " + word);
         }
     }
@@ -59,7 +56,9 @@ public class Exercises {
     static int meaningfulLineCount(String filename) throws IOException {
         try (FileReader in = new FileReader(filename)) {
             BufferedReader br = new BufferedReader(in);
-            return (int) br.lines().filter(line -> !line.trim().isEmpty()).filter(line -> line.trim().charAt(0) != '#')
+            return (int) br.lines()
+                    .filter(line -> !line.trim().isEmpty())
+                    .filter(line -> line.trim().charAt(0) != '#')
                     .count();
         } catch (IOException e) {
             throw new FileNotFoundException("No such file");
