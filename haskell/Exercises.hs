@@ -1,6 +1,6 @@
 module Exercises
     ( change,
-      -- put the proper exports here
+      firstThenApply
     ) where
 
 import qualified Data.Map as Map
@@ -21,7 +21,12 @@ change amount
                 newCounts = Map.insert d count counts
 
 -- Write your first then apply function here
-
+firstThenApply :: [a] -> (a -> Bool) -> (a -> b) -> Maybe B
+firstThenApply [] __ = Nothing
+firstThenApply (x:xs) p failed
+    | p x = Just (f x)
+    | otherwise = firstThenApply xs p f
+ 
 -- Write your infinite powers generator here
 
 -- Write your line count function here
