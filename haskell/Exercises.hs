@@ -7,7 +7,7 @@ module Exercises
       volume,
       surfaceArea,
       scaleShape,
-      BST(..),
+      BST(Empty),
       size,
       inorder,
       insert,
@@ -70,6 +70,7 @@ scaleShape factor (Box l w h) = Box (factor * l) (factor * w) (factor * h)
 data BST a
   = Empty
   | Node a (BST a) (BST a)
+  deriving (Eq)
 
 size :: BST a -> Int
 size Empty = 0
