@@ -7,7 +7,7 @@ module Exercises
       volume,
       surfaceArea,
       scaleShape,
-      BST(..),
+      BST(Empty),
       size,
       inorder,
       insert,
@@ -42,7 +42,9 @@ meaningfulLineCount path = do
   contents <- readFile path
   return $ length $ filter meaningfulLine $ lines contents
   where
-    meaningfulLine line = not (all isSpace line) && not ("--" `isPrefixOf` trimStart line)
+    meaningfulLine :: String -> Bool
+    meaningfulLine line = not (all isSpace line) && not ("#" `isPrefixOf` trimStart line)
+    trimStart :: String -> String
     trimStart = dropWhile isSpace
 
 data Shape
@@ -65,6 +67,7 @@ scaleShape factor (Box l w h) = Box (factor * l) (factor * w) (factor * h)
 data BST a
   = Empty
   | Node a (BST a) (BST a)
+  deriving (Eq)
 
 size :: BST a -> Int
 size Empty = 0
