@@ -13,7 +13,10 @@ let change amount =
     aux amount denominations
 
 (* Write your first then apply function here *)
-let first_then_apply array predicate consumer = 
+let first_then_apply
+  (array : 'a list)
+  (predicate : 'a -> bool)
+  (consumer : 'a -> 'b option) : 'b option = 
   match List.find_opt predicate array with
   | None -> None
   | Some x -> consumer x
@@ -63,7 +66,9 @@ let surface_area s =
 (* Write your binary search tree implementation here *)
 type 'a binary_search_tree =
   | Empty
-  | Node of 'a binary_search_tree * 'a * 'a binary_search_tree;;
+  | Node of 'a binary_search_tree * 'a * 'a binary_search_tree
+
+let empty = Empty
 
 let rec size tree = 
   match tree with
@@ -85,10 +90,12 @@ let rec contains value tree =
   | Node (left, v, right) -> 
     if value = v then 
       true 
+    else if value < v then 
+      contains value left
     else 
-      contains value right;;
+      contains value right
 
 let rec inorder tree =
   match tree with
   | Empty -> []
-  | Node (left, v, right) -> inorder left @ [v] @ inorder right;;
+  | Node (left, v, right) -> inorder left @ [v] @ inorder right
