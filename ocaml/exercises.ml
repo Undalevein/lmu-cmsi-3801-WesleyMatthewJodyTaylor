@@ -12,7 +12,6 @@ let change amount =
     in
     aux amount denominations
 
-(* Write your first then apply function here *)
 let first_then_apply
   (array : 'a list)
   (predicate : 'a -> bool)
@@ -21,14 +20,12 @@ let first_then_apply
   | None -> None
   | Some x -> consumer x
 
-(* Write your powers generator here *)
 let powers_generator base =
   let rec generate_from power () =
     Seq.Cons (power, generate_from (power * base))
   in 
   generate_from 1;;
 
-(* Write your line count function here *)
 let meaningful_line_count filename =
   let meaningful_line line =
     let trimmed = String.trim line in
@@ -48,7 +45,6 @@ let meaningful_line_count filename =
   in
   Fun.protect ~finally (fun () -> count_lines(0));;
 
-(* Write your shape type and associated functions here *)
 type shape =
   | Sphere of float
   | Box of float * float * float
@@ -63,7 +59,6 @@ let surface_area s =
   | Sphere r -> 4. *. Float.pi *. (r ** 2.)
   | Box (l, w, h) -> 2. *. (l *. w +. l *. h +. w *. h);;
 
-(* Write your binary search tree implementation here *)
 type 'a binary_search_tree =
   | Empty
   | Node of 'a binary_search_tree * 'a * 'a binary_search_tree
