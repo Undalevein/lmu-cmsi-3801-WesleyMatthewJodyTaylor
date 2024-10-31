@@ -7,7 +7,7 @@ module Exercises
       volume,
       surfaceArea,
       scaleShape,
-      BST(..),
+      BST(Empty),
       size,
       inorder,
       insert,
@@ -31,22 +31,22 @@ change amount
                 (count, newRemaining) = remaining `divMod` d
                 newCounts = Map.insert d count counts
 
--- Write your first then apply function here
+firstThenApply :: [a] -> (a -> Bool) -> (a -> b) -> Maybe b
+firstThenApply xs pred f = fmap f (find pred xs)
 
--- Write your infinite powers generator here
 powers :: Integral a => a -> [a]
 powers base = map (base^) [0..]
 
--- Write your line count function here
 meaningfulLineCount :: FilePath -> IO Int
 meaningfulLineCount path = do
   contents <- readFile path
   return $ length $ filter meaningfulLine $ lines contents
   where
-    meaningfulLine line = not (all isSpace line) && not ("--" `isPrefixOf` trimStart line)
+    meaningfulLine :: String -> Bool
+    meaningfulLine line = not (all isSpace line) && not ("#" `isPrefixOf` trimStart line)
+    trimStart :: String -> String
     trimStart = dropWhile isSpace
 
--- Write your shape data type here
 data Shape
   = Sphere Double
   | Box Double Double Double
@@ -64,7 +64,6 @@ scaleShape :: Double -> Shape -> Shape
 scaleShape factor (Sphere r) = Sphere (factor * r)
 scaleShape factor (Box l w h) = Box (factor * l) (factor * w) (factor * h)
 
--- Write your binary search tree algebraic type here
 data BST a
   = Empty
   | Node a (BST a) (BST a)
