@@ -7,7 +7,7 @@ module Exercises
       volume,
       surfaceArea,
       scaleShape,
-      BST(Empty),
+      BST(..),
       size,
       inorder,
       insert,
@@ -32,8 +32,6 @@ change amount
                 newCounts = Map.insert d count counts
 
 -- Write your first then apply function here
-firstThenApply :: [a] -> (a -> Bool) -> (a -> b) -> Maybe b
-firstThenApply xs pred f = fmap f (find pred xs)
 
 -- Write your infinite powers generator here
 powers :: Integral a => a -> [a]

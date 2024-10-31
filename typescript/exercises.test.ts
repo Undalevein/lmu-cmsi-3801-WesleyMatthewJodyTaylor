@@ -2,14 +2,16 @@ import { describe, it } from "node:test"
 import { deepEqual, throws, rejects } from "node:assert/strict"
 import {
   change,
-  // firstThenApply,
-  // powersGenerator,
-  // meaningfulLineCount,
-  // Shape,
-  // BinarySearchTree,
-  // Empty,
-  // volume,
-  // surfaceArea,
+  firstThenApply,
+  powersGenerator,
+  meaningfulLineCount,
+  Shape,
+  BinarySearchTree,
+  Empty,
+  volume,
+  surfaceArea,
+  areShapesEqual,
+  shapeToString,
 } from "./exercises.js"
 
 function expectChange(
@@ -50,126 +52,139 @@ describe("The change function", () => {
 
 // Uncomment the following tests as you complete the exercises
 
-// describe("The firstThenApply function", () => {
-//   const nonEmpty = (s: string) => s !== ""
-//   const lengthGreaterThan3 = (s: string) => s.length > 3
-//   const lower = (s: string) => s.toLowerCase()
-//   const square = (n: number) => n * n
-//   it("works", () => {
-//     deepEqual(firstThenApply([], nonEmpty, lower), undefined)
-//     deepEqual(firstThenApply(["", "A", "B"], nonEmpty, lower), "a")
-//     deepEqual(
-//       firstThenApply(["", "A", "ABC"], lengthGreaterThan3, lower),
-//       undefined
-//     )
-//     deepEqual(
-//       firstThenApply(["ABC", "ABCD", "ABCDE"], lengthGreaterThan3, lower),
-//       "abcd"
-//     )
-//     deepEqual(
-//       firstThenApply([1, 2, 3], (n) => n > 1, square),
-//       4
-//     )
-//     deepEqual(
-//       firstThenApply([1, 2, 3], (n) => n > 3, square),
-//       undefined
-//     )
-//   })
-// })
+describe("The firstThenApply function", () => {
+  const nonEmpty = (s: string) => s !== ""
+  const lengthGreaterThan3 = (s: string) => s.length > 3
+  const lower = (s: string) => s.toLowerCase()
+  const square = (n: number) => n * n
+  it("works", () => {
+    deepEqual(firstThenApply([], nonEmpty, lower), undefined)
+    deepEqual(firstThenApply(["", "A", "B"], nonEmpty, lower), "a")
+    deepEqual(
+      firstThenApply(["", "A", "ABC"], lengthGreaterThan3, lower),
+      undefined
+    )
+    deepEqual(
+      firstThenApply(["ABC", "ABCD", "ABCDE"], lengthGreaterThan3, lower),
+      "abcd"
+    )
+    deepEqual(
+      firstThenApply([1, 2, 3], (n) => n > 1, square),
+      4
+    )
+    deepEqual(
+      firstThenApply([1, 2, 3], (n) => n > 3, square),
+      undefined
+    )
+  })
+})
 
-// describe("The powers generator", () => {
-//   it("works as expected", () => {
-//     const g1 = powersGenerator(2n)
-//     deepEqual(g1.next(), { value: 1n, done: false })
-//     deepEqual(g1.next(), { value: 2n, done: false })
-//     for (let i = 0; i < 98; i++) g1.next()
-//     deepEqual(g1.next(), {
-//       value: 1267650600228229401496703205376n,
-//       done: false,
-//     })
+describe("The powers generator", () => {
+  it("works as expected", () => {
+    const g1 = powersGenerator(2n)
+    deepEqual(g1.next(), { value: 1n, done: false })
+    deepEqual(g1.next(), { value: 2n, done: false })
+    for (let i = 0; i < 98; i++) g1.next()
+    deepEqual(g1.next(), {
+      value: 1267650600228229401496703205376n,
+      done: false,
+    })
 
-//     const g2 = powersGenerator(3n)
-//     deepEqual(g2.next(), { value: 1n, done: false })
-//     deepEqual(g2.next(), { value: 3n, done: false })
-//     deepEqual(g2.next(), { value: 9n, done: false })
-//     deepEqual(g2.next(), { value: 27n, done: false })
-//     deepEqual(g2.next(), { value: 81n, done: false })
-//   })
-// })
+    const g2 = powersGenerator(3n)
+    deepEqual(g2.next(), { value: 1n, done: false })
+    deepEqual(g2.next(), { value: 3n, done: false })
+    deepEqual(g2.next(), { value: 9n, done: false })
+    deepEqual(g2.next(), { value: 27n, done: false })
+    deepEqual(g2.next(), { value: 81n, done: false })
+  })
+})
 
-// describe("The meaningfulLineCount function", async () => {
-//   await it("throws if no such file", async () => {
-//     rejects(async () => await meaningfulLineCount("NoSuchFile.txt"), /Error/)
-//   })
-//   await it("correctly counts lines for the test file", async () => {
-//     const count = await meaningfulLineCount("../test-for-line-count.txt")
-//     deepEqual(count, 5)
-//   })
-// })
+describe("The meaningfulLineCount function", async () => {
+  await it("throws if no such file", async () => {
+    rejects(async () => await meaningfulLineCount("NoSuchFile.txt"), /Error/)
+  })
+  await it("correctly counts lines for the test file", async () => {
+    const count = await meaningfulLineCount("../test-for-line-count.txt")
+    deepEqual(count, 5)
+  })
+})
 
-// describe("The shape functions", () => {
-//   const sphere: Shape = { kind: "Sphere", radius: 5 }
-//   const box: Shape = { kind: "Box", width: 3, length: 4, depth: 5 }
-//   it("calculates volumes correctly", () => {
-//     deepEqual(volume(sphere), 523.5987755982989)
-//     deepEqual(volume(box), 60)
-//   })
-//   it("calculates surface areas correctly", () => {
-//     deepEqual(surfaceArea(sphere), 314.1592653589793)
-//     deepEqual(surfaceArea(box), 94)
-//   })
-// })
+describe("The shape functions", () => {
+  const sphere: Shape = { kind: "Sphere", radius: 5 }
+  const box: Shape = { kind: "Box", width: 3, length: 4, depth: 5 }
+  it("calculates volumes correctly", () => {
+    deepEqual(volume(sphere), 523.5987755982989)
+    deepEqual(volume(box), 60)
+  })
+  it("calculates surface areas correctly", () => {
+    deepEqual(surfaceArea(sphere), 314.1592653589793)
+    deepEqual(surfaceArea(box), 94)
+  })
+  // Note: extra tests below were added to test other requirements for problem 4 in 
+  // TypeScript. These are NOT from the original homework template.
+  it("can compare equality", () => {
+    deepEqual(areShapesEqual(sphere, { kind: "Sphere", radius: 5 }), true)
+    deepEqual(areShapesEqual(sphere, { kind: "Sphere", radius: 4 }), false)
+    deepEqual(areShapesEqual(box, { kind: "Box", width: 3, length: 4, depth: 5 }), true)
+    deepEqual(areShapesEqual(box, { kind: "Box", width: 3, length: 4, depth: 4 }), false)
+    deepEqual(areShapesEqual(sphere, box), false)
+  })
+  it("can become a string", () => {
+    deepEqual(shapeToString(sphere), "Sphere 5")
+    deepEqual(shapeToString(box), "Box 3 4 5")
+  })
+})
 
-// describe("The BinarySearchTree class", () => {
-//   let t: BinarySearchTree<string>
-//   it("starts empty", () => {
-//     t = new Empty()
-//     deepEqual(t.size(), 0)
-//     deepEqual(t.contains("A"), false)
-//     deepEqual(`${t}`, "()")
-//   })
-//   it("can insert elements", () => {
-//     t = t.insert("G")
-//     deepEqual(t.size(), 1)
-//     deepEqual(t.contains("G"), true)
-//     deepEqual(t.contains("A"), false)
-//     deepEqual(`${t}`, "(G)")
-//     t = t.insert("B")
-//     deepEqual(`${t}`, "((B)G)")
-//     t = t.insert("D")
-//     deepEqual(`${t}`, "((B(D))G)")
-//     t = t.insert("H")
-//     deepEqual(`${t}`, "((B(D))G(H))")
-//     t = t.insert("A")
-//     deepEqual(`${t}`, "(((A)B(D))G(H))")
-//     t = t.insert("C")
-//     t = t.insert("J")
-//     deepEqual(t.size(), 7)
-//     deepEqual(t.contains("J"), true)
-//     deepEqual(t.contains("Z"), false)
-//     deepEqual(`${t}`, "(((A)B((C)D))G(H(J)))")
-//   })
-//   it("is immutable", () => {
-//     let t2 = t
-//     t2 = t2.insert("F")
-//     deepEqual(t2.size(), 8)
-//     deepEqual(t.size(), 7)
-//   })
-//   it("can iterate in order", () => {
-//     deepEqual([...t.inorder()], ["A", "B", "C", "D", "G", "H", "J"])
-//     let t2: BinarySearchTree<number> = new Empty()
-//     deepEqual([...t2.inorder()], [])
-//     t2 = t2.insert(5)
-//     deepEqual([...t2.inorder()], [5])
-//     t2 = t2.insert(3)
-//     t2 = t2.insert(8)
-//     deepEqual([...t2.inorder()], [3, 5, 8])
-//   })
-//   it("ignores insertions if values are already present", () => {
-//     let t: BinarySearchTree<boolean> = new Empty()
-//     t = t.insert(true)
-//     t = t.insert(false)
-//     t = t.insert(true)
-//     deepEqual(t.size(), 2)
-//   })
-// })
+describe("The BinarySearchTree class", () => {
+  let t: BinarySearchTree<string>
+  it("starts empty", () => {
+    t = new Empty()
+    deepEqual(t.size(), 0)
+    deepEqual(t.contains("A"), false)
+    deepEqual(`${t}`, "()")
+  })
+  it("can insert elements", () => {
+    t = t.insert("G")
+    deepEqual(t.size(), 1)
+    deepEqual(t.contains("G"), true)
+    deepEqual(t.contains("A"), false)
+    deepEqual(`${t}`, "(G)")
+    t = t.insert("B")
+    deepEqual(`${t}`, "((B)G)")
+    t = t.insert("D")
+    deepEqual(`${t}`, "((B(D))G)")
+    t = t.insert("H")
+    deepEqual(`${t}`, "((B(D))G(H))")
+    t = t.insert("A")
+    deepEqual(`${t}`, "(((A)B(D))G(H))")
+    t = t.insert("C")
+    t = t.insert("J")
+    deepEqual(t.size(), 7)
+    deepEqual(t.contains("J"), true)
+    deepEqual(t.contains("Z"), false)
+    deepEqual(`${t}`, "(((A)B((C)D))G(H(J)))")
+  })
+  it("is immutable", () => {
+    let t2 = t
+    t2 = t2.insert("F")
+    deepEqual(t2.size(), 8)
+    deepEqual(t.size(), 7)
+  })
+  it("can iterate in order", () => {
+    deepEqual([...t.inorder()], ["A", "B", "C", "D", "G", "H", "J"])
+    let t2: BinarySearchTree<number> = new Empty()
+    deepEqual([...t2.inorder()], [])
+    t2 = t2.insert(5)
+    deepEqual([...t2.inorder()], [5])
+    t2 = t2.insert(3)
+    t2 = t2.insert(8)
+    deepEqual([...t2.inorder()], [3, 5, 8])
+  })
+  it("ignores insertions if values are already present", () => {
+    let t: BinarySearchTree<boolean> = new Empty()
+    t = t.insert(true)
+    t = t.insert(false)
+    t = t.insert(true)
+    deepEqual(t.size(), 2)
+  })
+})
