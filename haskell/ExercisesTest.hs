@@ -73,8 +73,8 @@ main =
         failed <- return $ sum $ map snd results
         passed <- return $ length fixture - failed
         shouldBe5 <- meaningfulLineCount "../test-for-line-count.txt"
-        -- passed <- return $ passed + (if shouldBe5 == 5 then 1 else 0)
-        -- failed <- return $ failed + (if shouldBe5 == 5 then 0 else 1)
+        passed <- return $ passed + (if shouldBe5 == 5 then 1 else 0)
+        failed <- return $ failed + (if shouldBe5 == 5 then 0 else 1)
         printf "%d passed, %d failed\n" passed failed
         where
             test (message, condition) =
