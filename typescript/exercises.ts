@@ -23,8 +23,9 @@ export function firstThenApply<T, U>(
   predicate: (element: T) => boolean,
   consumer: (element: T) => U,
 ): U | undefined {
-  if (elements.filter(predicate)[0]) {
-    return consumer(elements.filter(predicate)[0])
+  const firstElement: T | undefined = elements.filter(predicate)[0]
+  if (firstElement) {
+    return consumer(firstElement)
   }
   return undefined
 }
@@ -40,7 +41,7 @@ export function* powersGenerator(base: bigint): IterableIterator<BigInt> {
 export async function meaningfulLineCount(filePath: string): Promise<number> {
   const file: FileHandle = await open(filePath, "r");
   let validLines: number = 0
-  if (file === undefined) {
+  if (!file) {
     throw new Error(`File ${filePath} cannot be found.`)
   }
   for await (const line of file.readLines()) {
