@@ -24,13 +24,12 @@ let powers_generator base =
   let rec generate_from power () =
     Seq.Cons (power, generate_from (power * base))
   in 
-  generate_from 1;;
+  generate_from 1
 
 let meaningful_line_count filename =
   let meaningful_line line =
     let trimmed = String.trim line in
-    String.length trimmed > 0 && not (String.get trimmed 0 = '#')
-  in 
+    trimmed <> "" && not (String.starts_with ~prefix:"#" trimmed)  in 
   let the_file = open_in filename in 
   let finally () = close_in the_file in 
   let rec count_lines count = 
@@ -43,7 +42,7 @@ let meaningful_line_count filename =
     with 
     | End_of_file -> count
   in
-  Fun.protect ~finally (fun () -> count_lines(0));;
+  Fun.protect ~finally (fun () -> count_lines 0)
 
 type shape =
   | Sphere of float
@@ -52,12 +51,12 @@ type shape =
 let volume s =
   match s with
   | Sphere r -> Float.pi *. (r**3.) *. 4. /. 3. 
-  | Box (l, w, h) -> l *. w *. h;;
+  | Box (l, w, h) -> l *. w *. h
 
 let surface_area s =
   match s with
   | Sphere r -> 4. *. Float.pi *. (r ** 2.)
-  | Box (l, w, h) -> 2. *. (l *. w +. l *. h +. w *. h);;
+  | Box (l, w, h) -> 2. *. (l *. w +. l *. h +. w *. h)
 
 type 'a binary_search_tree =
   | Empty
