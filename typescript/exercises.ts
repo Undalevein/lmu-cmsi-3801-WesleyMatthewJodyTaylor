@@ -18,12 +18,14 @@ export function change(amount: bigint): Map<bigint, bigint> {
   return counts
 }
 
-export function firstThenApply<T, U>(elements: T[],
+export function firstThenApply<T, U>(
+  elements: T[],
   predicate: (element: T) => boolean,
   consumer: (element: T) => U,
 ): U | undefined {
-  if (elements.filter(predicate)[0]) {
-    return consumer(elements.filter(predicate)[0])
+  const firstElement: T | undefined = elements.filter(predicate)[0]
+  if (firstElement) {
+    return consumer(firstElement)
   }
   return undefined
 }
@@ -39,7 +41,7 @@ export function* powersGenerator(base: bigint): IterableIterator<BigInt> {
 export async function meaningfulLineCount(filePath: string): Promise<number> {
   const file: FileHandle = await open(filePath, "r");
   let validLines: number = 0
-  if (file === undefined) {
+  if (!file) {
     throw new Error(`File ${filePath} cannot be found.`)
   }
   for await (const line of file.readLines()) {
@@ -52,13 +54,13 @@ export async function meaningfulLineCount(filePath: string): Promise<number> {
 }
 
 /*
- * Notice: While the requirements for Homework #3 states that 1) the shapes must be immutable, 2) there
- * must be value-based equality for all shapes, and 3) the shapes can be printed out as strings. However,
- * the tests provided from exercises.test.ts do not test these requirements. As such, some of the functions
- * below are used in the exercise.test.ts for testing purposes. 
+ * Notice: Because there was no tests in exercises.test.ts for testing the Shape's
+ * immutability, equality, or string casting for problem #4, there are some methods
+ * here that are included that won't get used. I intend to leave these here because
+ * these are technically required for the problem.
  */
 type Immutable<T> = {
-  readonly [K in keyof T]: Immutable<T[K]>
+  readonly [Key in keyof T]: Immutable<T[Key]>
 }
 
 export type Shape = Box | Sphere
@@ -90,12 +92,12 @@ export function surfaceArea(shape: Shape): number {
 export function areShapesEqual(shape1: Shape, shape2: Shape): boolean {
   if (isSphere(shape1) && isSphere(shape2)) {
     return shape1.radius === shape2.radius
-  } else if (isSphere(shape1) || isSphere(shape2)) {
-    return false
-  } else {
+  } else if (!isSphere(shape1) && !isSphere(shape2)) {
     return (shape1.width === shape2.width &&
       shape1.length === shape2.length &&
       shape1.depth === shape2.depth)
+  } else {
+    return false
   }
 }
 
@@ -110,12 +112,12 @@ export function shapeToString(shape: Shape): string {
 export type BinarySearchTree<T> = Node<T> | Empty<T>
 
 class Node<T> {
-  private item: T
+  private nodeItem: T
   private left: BinarySearchTree<T>
   private right: BinarySearchTree<T>
 
-  public constructor(item: T, left: BinarySearchTree<T>, right: BinarySearchTree<T>) {
-    this.item = item
+  public constructor(nodeItem: T, left: BinarySearchTree<T>, right: BinarySearchTree<T>) {
+    this.nodeItem = nodeItem
     this.left = left
     this.right = right
   }
@@ -124,83 +126,76 @@ class Node<T> {
     return this.left.size() + 1 + this.right.size()
   }
 
-  public contains(item: T): boolean {
-    if (item === this.item) {
+  public contains(target: T): boolean {
+    if (target === this.nodeItem) {
       return true
-    } else if (typeof item !== typeof this.item) {
-      return false
     }
-
-    switch (typeof item) {
+    switch (typeof target) {
       case "number":
-        if (item < (this.item as number)) {
-          return this.left.contains(item)
+        if (target < (this.nodeItem as number)) {
+          return this.left.contains(target)
         } else {
-          return this.right.contains(item)
+          return this.right.contains(target)
         }
       case "string":
-        if (item.localeCompare(this.item as string) < 0) {
-          return this.left.contains(item)
+        if (target.localeCompare(this.nodeItem as string) < 0) {
+          return this.left.contains(target)
         } else {
-          return this.right.contains(item)
+          return this.right.contains(target)
         }
       case "boolean":
-        // Since booleans has only 2 possible values, we'll return true 
-        // if one of the child nodes is not empty. Otherwise, false.
-        if (this.left instanceof Node || this.right instanceof Node) {
-          return true
-        } else {
-          return false
-        }
+        // Since booleans have only 2 possible values, we'll return true
+        // if one of the child nodes is not empty.
+        return this.left instanceof Node || this.right instanceof Node
       default:
         return false
     }
   }
 
   public insert(item: T): BinarySearchTree<T> {
-    if (item === this.item) {
-      return new Node(this.item, this.left, this.right)
-    } else if (typeof item !== typeof this.item) {
-      throw new Error(`TypeError: ${item} is not a ${typeof this.item}.`)
+    if (item === this.nodeItem) {
+      return new Node(this.nodeItem, this.left, this.right)
+    } else if (typeof item !== typeof this.nodeItem) {
+      throw new Error(`TypeError: ${item} is not a ${typeof this.nodeItem}.`)
     }
 
     switch (typeof item) {
       case "number":
-        if (item < (this.item as number)) {
-          return new Node(this.item, this.left.insert(item), this.right)
+        if (item < (this.nodeItem as number)) {
+          return new Node(this.nodeItem, this.left.insert(item), this.right)
         } else {
-          return new Node(this.item, this.left, this.right.insert(item))
+          return new Node(this.nodeItem, this.left, this.right.insert(item))
         }
       case "string":
-        if (item.localeCompare(this.item as string) < 0) {
-          return new Node(this.item, this.left.insert(item), this.right)
+        if (item.localeCompare(this.nodeItem as string) < 0) {
+          return new Node(this.nodeItem, this.left.insert(item), this.right)
         } else {
-          return new Node(this.item, this.left, this.right.insert(item))
+          return new Node(this.nodeItem, this.left, this.right.insert(item))
         }
       case "boolean":
-        if (this.item as boolean) {
-          return new Node(this.item, this.left, this.right.insert(item))
+        if (this.nodeItem as boolean) {
+          return new Node(this.nodeItem, this.left, this.right.insert(item))
         } else {
-          return new Node(this.item, this.left.insert(item), this.right)
+          return new Node(this.nodeItem, this.left.insert(item), this.right)
         }
       default:
         // Assuming that the types for item and this.item are the same 
         // but the method does not support their variable types, then
         // return the current Node.
-        return new Node(this.item, this.left, this.right)
+        return new Node(this.nodeItem, this.left, this.right)
     }
   }
 
   public *inorder(): IterableIterator<T> {
     yield* this.left.inorder()
-    yield this.item
+    yield this.nodeItem
     yield* this.right.inorder()
   }
 
   public toString(): string {
     const leftItem = (this.left instanceof Empty) ? "" : `${this.left}`
     const rightItem = (this.right instanceof Empty) ? "" : `${this.right}`
-    return `(${leftItem}${this.item}${rightItem})`
+    return `(${leftItem}${this.nodeItem}${rightItem})`
   }
 }
 

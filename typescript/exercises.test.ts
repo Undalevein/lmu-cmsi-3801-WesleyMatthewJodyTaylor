@@ -120,19 +120,6 @@ describe("The shape functions", () => {
     deepEqual(surfaceArea(sphere), 314.1592653589793)
     deepEqual(surfaceArea(box), 94)
   })
-  // Note: extra tests below were added to test other requirements for problem 4 in 
-  // TypeScript. These are NOT from the original homework template.
-  it("can compare equality", () => {
-    deepEqual(areShapesEqual(sphere, { kind: "Sphere", radius: 5 }), true)
-    deepEqual(areShapesEqual(sphere, { kind: "Sphere", radius: 4 }), false)
-    deepEqual(areShapesEqual(box, { kind: "Box", width: 3, length: 4, depth: 5 }), true)
-    deepEqual(areShapesEqual(box, { kind: "Box", width: 3, length: 4, depth: 4 }), false)
-    deepEqual(areShapesEqual(sphere, box), false)
-  })
-  it("can become a string", () => {
-    deepEqual(shapeToString(sphere), "Sphere 5")
-    deepEqual(shapeToString(box), "Box 3 4 5")
-  })
 })
 
 describe("The BinarySearchTree class", () => {

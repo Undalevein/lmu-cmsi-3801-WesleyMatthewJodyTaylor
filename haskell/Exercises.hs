@@ -1,17 +1,17 @@
 module Exercises
-    ( change,
-      firstThenApply,
-      powers,
-      meaningfulLineCount,
-      Shape(..),
-      volume,
-      surfaceArea,
-      scaleShape,
-      BST(Empty),
-      size,
-      inorder,
-      insert,
-      contains
+    ( change
+    , firstThenApply
+    , powers
+    , meaningfulLineCount
+    , Shape(..)
+    , volume
+    , surfaceArea
+    , scaleShape
+    , BST(Empty)
+    , size
+    , inorder
+    , insert
+    , contains
     ) where
 
 import qualified Data.Map as Map
@@ -39,8 +39,8 @@ powers base = map (base^) [0..]
 
 meaningfulLineCount :: FilePath -> IO Int
 meaningfulLineCount path = do
-  contents <- readFile path
-  return $ length $ filter meaningfulLine $ lines contents
+    contents <- readFile path
+    return $ length $ filter meaningfulLine $ lines contents
   where
     meaningfulLine :: String -> Bool
     meaningfulLine line = not (all isSpace line) && not ("#" `isPrefixOf` trimStart line)
@@ -48,9 +48,9 @@ meaningfulLineCount path = do
     trimStart = dropWhile isSpace
 
 data Shape
-  = Sphere Double
-  | Box Double Double Double
-  deriving (Eq, Show)
+    = Sphere Double
+    | Box Double Double Double
+    deriving (Eq, Show)
 
 volume :: Shape -> Double
 volume (Sphere r) = (4/3) * pi * r^3
@@ -65,9 +65,9 @@ scaleShape factor (Sphere r) = Sphere (factor * r)
 scaleShape factor (Box l w h) = Box (factor * l) (factor * w) (factor * h)
 
 data BST a
-  = Empty
-  | Node a (BST a) (BST a)
-  deriving (Eq)
+    = Empty
+    | Node a (BST a) (BST a)
+    deriving (Eq)
 
 size :: BST a -> Int
 size Empty = 0
@@ -80,20 +80,20 @@ inorder (Node value left right) = inorder left ++ [value] ++ inorder right
 contains :: Ord a => a -> BST a -> Bool
 contains _ Empty = False
 contains x (Node value left right)
-  | x == value = True
-  | x < value = contains x left
-  | otherwise = contains x right
+    | x == value = True
+    | x < value = contains x left
+    | otherwise = contains x right
 
 insert :: Ord a => a -> BST a -> BST a
 insert value Empty = Node value Empty Empty
 insert value (Node nodeValue left right)
-  | value < nodeValue = Node nodeValue (insert value left) right
-  | value > nodeValue = Node nodeValue left (insert value right)
-  | otherwise = Node nodeValue left right
+    | value < nodeValue = Node nodeValue (insert value left) right
+    | value > nodeValue = Node nodeValue left (insert value right)
+    | otherwise = Node nodeValue left right
 
 instance (Show a) => Show (BST a) where
-  show Empty = "()"
-  show (Node value Empty Empty) = "(" ++ show value ++ ")"
-  show (Node value left Empty) = "(" ++ show left ++ show value ++ ")"
-  show (Node value Empty right) = "(" ++ show value ++ show right ++ ")"
-  show (Node value left right) = "(" ++ show left ++ show value ++ show right ++ ")"
+    show Empty = "()"
+    show (Node value Empty Empty) = "(" ++ show value ++ ")"
+    show (Node value left Empty) = "(" ++ show left ++ show value ++ ")"
+    show (Node value Empty right) = "(" ++ show value ++ show right ++ ")"
+    show (Node value left right) = "(" ++ show left ++ show value ++ show right ++ ")"
