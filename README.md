@@ -22,3 +22,5 @@ This repo is a collection of submitted homework from the group. Under the README
     + Meaningful Line Count: Functions that return the number of text lines from a text file that are neither empty, made up entirely of whitespace, or whose first non-whitespace character is #.
     + Shapes: Data types for three-dimensional shapes that can be either rectangular boxes or spheres, that are able to compute both the surface area and the volume, and also have a to-string operation.
     + Binary Search Tree: A generic, persistent, binary search tree implementation that supports insertion, lookup, count, inorder traversal, and for TypeScript and Haskell, the string description of the tree.
++ **Homework 4 (Systems)** C, C++, Rust
+    + Implement a user defined data type for the Stack data structure. C is a stack of strings, C++ and Rust are generic. C and C++ builds the stack with manually-managed array storage, resized by doubling capacity if adding an element beyond the current capacity, and shrunk when popping to a size below a quarter of the current capacity unless it is at 16 (the minimum). Rust wraps a Rust vector, which handles its own resizing. 
