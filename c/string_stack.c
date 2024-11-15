@@ -2,112 +2,137 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Complete your string stack implementation in this file.
+#define INITIAL_CAPACITY 16
 
 struct _Stack {
-    char** items;       // Array of string pointers
-    int capacity;       // Current capacity of the stack
-    int size;           // Current number of elements in the stack
+    char** elements;
+    int top;
+    int capacity;
 };
 
 stack_response create() {
-    stack s = (stack)malloc(sizeof(struct _Stack));
+    // TODO - long, 11 lines
+    // initialize stack and set its top to 0, and return it
+    stack s = malloc(sizeof(struct _Stack));
     if (s == NULL) {
-        return (stack_response){ .code = out_of_memory, .stack = NULL };
+        return (stack_response){.code = out_of_memory, .stack = NULL};
     }
-
-    s->capacity = 16; // Initial capacity
-    s->size = 0;
-    s->items = (char**)malloc(s->capacity * sizeof(char*));
-    if (s->items == NULL) {
+    s->capacity = INITIAL_CAPACITY;
+    s->elements = malloc(INITIAL_CAPACITY * sizeof(char*));
+    // Check for out of memory
+    //YOU DO THIS 
+    if (s->elements == NULL) {
         free(s);
-        return (stack_response){ .code = out_of_memory, .stack = NULL };
+        return (stack_response){.code = out_of_memory, .stack = NULL};
     }
-
-    return (stack_response){ .code = success, .stack = s };
-}
-
-bool is_empty(const stack s) {
-    return s->size == 0;
-}
-
-bool is_full(const stack s) {
-    return s->size >= MAX_CAPACITY; // Check against MAX_CAPACITY
+    //
+    //
+    s->top = 0;
+    return (stack_response){.code = success, .stack = s};
 }
 
 int size(const stack s) {
-    return s->size;
+    // TODO
+    return s->top;
 }
 
-response_code push(stack s, char* item) {
-    // Check if the string length exceeds the maximum allowed length
-    if (strlen(item) > MAX_ELEMENT_BYTE_SIZE) {
-        return stack_element_too_large; // Return the error code for long strings
+bool is_empty(const stack s) {
+    // TODO - size is 0, top is 0
+    return size(s) == 0;
+}
+
+bool is_full(const stack s) { // If at MAX_CAPACITY
+    // TODO - return top is at MAX_CAPACITY
+    return s->top >= MAX_CAPACITY;
+}              
+
+response_code push(stack s, char* item) {// Stores copy of string inside stack
+    // TODO
+    if (is_full(s)) {
+        return stack_full;
     }
-
-    // Expand capacity if full
-    if (s->size >= s->capacity) {
-        // Check if we have reached the maximum capacity limit
-        if (s->capacity >= MAX_CAPACITY) {
-            return stack_full; // Return an error code if the stack is full
-        }
-
-        // Double the capacity
+    if (strlen(item) >= MAX_ELEMENT_BYTE_SIZE) {
+        return stack_element_too_large;
+    }
+    if (s->top == s->capacity) {
+        // we need to resize, we need to make it twice as big
         int new_capacity = s->capacity * 2;
         if (new_capacity > MAX_CAPACITY) {
-            new_capacity = MAX_CAPACITY; // Ensure it does not exceed MAX_CAPACITY
+            new_capacity = MAX_CAPACITY;
         }
-
-        // Allocate a new array with the new capacity
-        char** new_items = (char**)realloc(s->items, new_capacity * sizeof(char*));
-        if (new_items == NULL) {
-            return out_of_memory; // Return an error code if memory allocation fails
+        char** new_elements = realloc(s->elements, new_capacity * sizeof(char*));
+        if (new_elements == NULL) {
+            return out_of_memory;
         }
-        s->items = new_items;
-        s->capacity = new_capacity; // Update the capacity
+        s->elements = new_elements;
+        s->capacity = new_capacity;
     }
 
-    // Allocate memory for the new string and copy the item into it
-    char* new_item = (char*)malloc((strlen(item) + 1) * sizeof(char));
-    if (new_item == NULL) {
-        return out_of_memory; // Return an error code if memory allocation fails
+        //FOR YOU: MAKE SURE THE STRING BEING PASSED IN IS NOT TOO BIG
+        //return stack_element_too_large if so -> did so above
+    s->elements[s->top] = strdup(item);
+    if (s->elements[s->top] == NULL) {
+            return out_of_memory;
     }
-    strcpy(new_item, item);
+    s->top++;
+    return success;
 
-    // Add the new item to the stack
-    s->items[s->size] = new_item;
-    s->size++; // Increase the size of the stack
+        // s->elements[s->top++] = strdup(item);
+        // return success;
+    }
 
-    return success; // Return success code
-}
+
+
 
 string_response pop(stack s) {
-    string_response res;
+    // TODO
+    // First things to check: is the stack empty?
     if (is_empty(s)) {
-        res.code = stack_empty; // Stack is empty
-        res.string = NULL;
-        return res;
+        return (string_response){.code = stack_empty, .string = NULL};
     }
+    char* popped = s->elements[--s->top];
 
-    // Get the last string item from the stack
-    char* popped_item = s->items[s->size - 1];
-    s->size--; // Decrease the size of the stack
+    
+    if (s->top < s->capacity / 4 && s->capacity > INITIAL_CAPACITY) {
+        int new_capacity = s->capacity / 2;
+        if (new_capacity < INITIAL_CAPACITY) {
+            new_capacity = INITIAL_CAPACITY;
+        }
+        char** new_elements = realloc(s->elements, new_capacity * sizeof(char*));
+        if (new_elements != NULL) {  // Realloc success
+            s->elements = new_elements;
+            s->capacity = new_capacity;
+        }
+    }
+    // //if the capacity went below 1/4, we should shrink it
+    // if new_capacity = s->capacity / 2;
+    //     if (new_capacity < 1) {
+    //         new_capacity = 1;
+    //     }
+    //     char** new_elements = realloc(s->elements, new_capacity * sizeof(char*));
+    //     if (new_elements == NULL) {
+    //         return out_of_memory;
+    //     }
+    //     s->elements = new_elements;
+    //     s->capacity = new_capacity;
+    //
+    //
+    //
+    return (string_response){.code = success, .string = popped};
+}             
+// Will include a copy of the string
+// from the stack, so the caller is
+// responsible for freeing it
 
-    // Create a new string response for the popped item
-    res.code = success;
-    res.string = popped_item; // The caller is responsible for freeing this
-
-    return res;
-}
-
-void destroy(stack* s) {
+void destroy(stack* s) { // frees *all* the memory
     if (s == NULL || *s == NULL) return;
-
-    // Free all the strings in the stack
-    for (int i = 0; i < (*s)->size; i++) {
-        free((*s)->items[i]);
+    
+    // Free each string
+    for (int i = 0; i < (*s)->top; i++) {
+        free((*s)->elements[i]);
     }
-    free((*s)->items); // Free the array of pointers
-    free(*s);          // Free the stack structure
-    *s = NULL;        // Nullify the pointer
+    // Free elements array and the stack itself
+    free((*s)->elements);
+    free(*s);
+    *s = NULL;  // Set pointer to NULL after freeing
 }
