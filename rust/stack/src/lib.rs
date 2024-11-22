@@ -5,7 +5,7 @@ pub struct Stack<T> {
 
 impl<T> Stack<T> {
     pub fn new() -> Self {
-        Stack { items: Vec::new()}
+        Stack {items: Vec::new()}
     }
 
     pub fn push(&mut self, item: T) {
@@ -26,9 +26,7 @@ impl<T> Stack<T> {
 
     pub fn len(&self) -> usize {
         self.items.len()
-    }
-
-    
+    } 
 }
 
 #[cfg(test)]
