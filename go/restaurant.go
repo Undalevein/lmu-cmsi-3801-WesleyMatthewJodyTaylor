@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 	"math/rand"
-	"runtime"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -47,12 +46,12 @@ func Customer(name string, waitGroup *sync.WaitGroup) {
 	defer waitGroup.Done()
 
 	for mealsEaten := 0; mealsEaten < 5; {
-		order := &Order{id: nextId.Add(1), customer: name}
+		order := &Order{id: nextId.Add(1), customer: name, reply: make(chan *Order, 1)}
 		log.Println(name, "placed order", order.id)
 		select {
 		case Waiter <- order:
 			meal := <-order.reply
-			do(2, name, "eating cooked order", meal.id)
+			do(2, name, "eating cooked order", meal.id, "prepared by", meal.preparedBy)
 			mealsEaten++
 		case <-time.After(7 * time.Second):
 			do(5, name, "waiting too long, abandoning order", order.id)
@@ -107,5 +106,4 @@ func main() {
 	waitGroup.Wait()
 
 	log.Println("Restaurant Closing")
-	runtime.Goexit()
 }
