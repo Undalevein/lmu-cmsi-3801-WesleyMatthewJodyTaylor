@@ -60,37 +60,6 @@ func Customer(name string, waitGroup *sync.WaitGroup) {
 	log.Println(name, "going home")
 }
 
-/*
- public static void customer(String name, CountDownLatch latch) {
-		try {
-			for (var mealsEaten = 0; mealsEaten < 5; ) {
-				var order = new Order(name);
-				log(name, "placed order", order.id);
-
-				try {
-					// Wait 7 seconds for the waiter to take the order
-					if (waiter.offer(order, 7, TimeUnit.SECONDS)) {
-						// Wait indefinitely for the meal to be cooked
-						var meal = order.reply.get();
-						// Eat for up to 2 seconds
-						doAction(2, name, "eating cooked order", meal.id,
-								"prepared by", meal.preparedBy);
-						mealsEaten++;
-					} else {
-						doAction(5, name, "waiting too long, abandoning order", order.id);
-					}
-				} catch (InterruptedException | ExecutionException e) {
-					Thread.currentThread().interrupt();
-					break;
-				}
-			}
-			log(name, "going home");
-		} finally {
-			latch.countDown();
-		}
-	}
-*/
-
 func main() {
 	customers := [10]string{"Ani", "Bai", "Cat", "Dao", "Eve", "Fay", "Gus", "Hua", "Iza", "Jai"}
 
