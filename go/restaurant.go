@@ -19,9 +19,6 @@ func do(seconds int, action ...any) {
 	time.Sleep(time.Duration(randomMillis) * time.Millisecond)
 }
 
-// Implement the rest of the simulation here. You may need to add more imports
-// above.
-
 type Order struct {
 	nextId atomic.Uint32
 	id int64
