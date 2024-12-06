@@ -29,13 +29,17 @@ type Order struct {
 var nextId atomic.Uint64
 var Waiter = make(chan *Order, 3)
 
-func Cook(name string) {
+func Cook(name string, done chan struct{}) {
 	log.Println(name, "starting work")
 	for {
-		order := <-Waiter
-		order.preparedBy = name
-		do(10, name, "cooking order", order.id, "for", order.customer)
-		order.reply <- order
+		select {
+		case order := <-Waiter:
+			order.preparedBy = name
+			do(10, name, "cooking order", order.id, "for", order.customer)
+			order.reply <- order
+		case <-done:
+			return
+		}
 	}
 }
 
@@ -60,9 +64,11 @@ func Customer(name string, waitGroup *sync.WaitGroup) {
 func main() {
 	customers := [10]string{"Ani", "Bai", "Cat", "Dao", "Eve", "Fay", "Gus", "Hua", "Iza", "Jai"}
 
-	go Cook("Remy")
-	go Cook("Colette")
-	go Cook("Linguini")
+	done := make(chan struct{})
+
+	go Cook("Remy", done)
+	go Cook("Colette", done)
+	go Cook("Linguini", done)
 
 	var waitGroup sync.WaitGroup
 	for _, customer := range customers {
@@ -71,5 +77,6 @@ func main() {
 	}
 	waitGroup.Wait()
 
+	close(done)
 	log.Println("Restaurant Closing")
 }
