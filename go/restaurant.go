@@ -58,7 +58,18 @@ func Customer(name string, waitGroup *sync.WaitGroup) {
 }
 
 func main() {
-	customers := [10]string{"Ani", "Bai", "Cat", "Dao", "Eve", "Fay", "Gus", "Hua", "Iza", "Jai"}
+	customers := [10]string{
+		"Ani", 
+		"Bai", 
+		"Cat", 
+		"Dao", 
+		"Eve", 
+		"Fay", 
+		"Gus", 
+		"Hua", 
+		"Iza", 
+		"Jai",
+	}
 
 	stop := make(chan struct{})
 
