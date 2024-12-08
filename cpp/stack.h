@@ -21,6 +21,8 @@ public:
   Stack() : top(0),
             capacity(INITIAL_CAPACITY),
             elements(make_unique<T[]>(INITIAL_CAPACITY))
+            {
+            }
 
   int size() const
   {
